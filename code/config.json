@@ -1,0 +1,27 @@
+{
+    "hostname": "",
+    "username": "",
+    "password": "",
+    "zip_pass": "admin:Cisco123!",
+    "api": {
+        "authenticationAPI": ["POST", "/dna/system/api/v1/auth/token"],
+        "getDeviceList": ["GET", "/dna/intent/api/v1/network-device"],
+        "exportDeviceConfigurations": ["POST", "/dna/intent/api/v1/network-device-archive/cleartext"],
+        "getTaskById": ["GET", "/dna/intent/api/v1/task/{taskId}"],
+        "downloadAFileByFileId": ["GET", "/dna/intent/api/v1/file/{fileId}"],
+        "getClientDetail": ["GET", "/dna/intent/api/v1/client-detail"],
+        "getClientEnrichmentDetails": ["GET", "/dna/intent/api/v1/client-enrichment-details"]
+    },
+    "umbrella_api_key": "",
+    "umbrella_api": {
+        "authentication": ["GET", "https://management.api.umbrella.com/auth/v2/oauth2/token"],
+        "reportingActivity": ["GET", "https://reports.api.umbrella.com/v2/organizations/{organizationid}/activity"]
+    },
+    "amp4e_hostname": "",
+    "amp4e_id": "",
+    "amp4e_key": "",
+    "amp4e_api": {
+        "computers": ["GET", "/v1/computers"],
+        "events": ["GET", "/v1/events"]
+    }
+}

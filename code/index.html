@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>テストチャットボット</title>
+</head>
+<body>
+<script src="https://riversun.github.io/chatux/chatux.min.js"></script>
+<script>
+    const chatux = new ChatUx();
+    const initParam =
+        {
+            renderMode: 'auto',
+            api: {
+                endpoint: 'http://127.0.0.1:5000/',
+                method: 'GET',
+                dataType: 'jsonp'
+            },
+            bot: {
+                botPhoto: 'https://enjoynet.co.jp/icon/honwakaneesan_stickericon_02.jpg',
+                humanPhoto: null,
+                widget: {
+                    sendLabel: '送信',
+                    placeHolder: '問合せは何でしょうか。'
+                }
+            },
+            window: {
+                title: 'お問い合わせ',
+                infoUrl: 'http://www.hogehoge.local'
+            }
+        };
+    chatux.init(initParam);
+    chatux.start(true);
+</script>
+テストサイトです。
+良くあるポータルの右端にチャットボットを設置可能です。
+</body>
+</html>
