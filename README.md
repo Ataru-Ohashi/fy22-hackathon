@@ -2,6 +2,8 @@
 
 By using DNAC simply, we aim to reduce the burden on administrators in troubleshooting wireless LANs and improve the service level for end users.
 
+![Sample Screenshot](./sample_ss.png)
+
 This is written in Python 3.7.x and references these popular libraries : 
 * base64
 * json
