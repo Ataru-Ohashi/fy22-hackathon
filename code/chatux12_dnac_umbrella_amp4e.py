@@ -1,4 +1,3 @@
-# -*- coding: Shift-JIS -*-
 import base64
 import json
 import logging
@@ -28,18 +27,18 @@ amp4e_driver = None
 #===============================================================================
 def load_json_file(file_path):
     """
-    JSONファイルをロードする。
-    ファイルが無い場合は空のdictを返却する。
+    Load the JSON file.
+    If there is no file, an empty dict is returned.
 
     Parameters
     ----------
     file_path : str
-        JSONファイルパス
+        JSON file path
 
     Returns
     -------
     _ : dict
-        パラメータマップ
+        parameter map
 
     Raises
     ------
@@ -58,18 +57,18 @@ def load_json_file(file_path):
 #===============================================================================
 def base64_encode(inputStr):
     """
-    文字列をBase64でエンコードする。
-    内部的には、一旦byte列に変換してエンコードしてからstrにデコードしている。
+    Encode strings in Base64.
+    Internally, it is encoded by converting it to a byte sequence once, and then decoded into str.
 
     Parameters
     ----------
     inputStr : str
-        エンコード対象文字列
+        String to be encoded
 
     Returns
     -------
     _ : str
-        エンコード済み文字列
+        encoded string
 
     Raises
     ------
@@ -82,7 +81,7 @@ def base64_encode(inputStr):
 #===============================================================================
 class CiscoAPIDriver:
     """
-    各APIドライバーのスーパークラス
+    Super class for each API driver
     """
 
     #===========================================================================
@@ -98,49 +97,49 @@ class CiscoAPIDriver:
     #===========================================================================
     def _send_http_request(self, api, header=None, payload=None, return_all=False):
         """
-        HTTPリクエストの送信と、HTTPレスポンスの受信を行う共通処理。
-        リターンコードの確認まで行い、データの確認は呼び元で行う。
+        A common process for sending HTTP requests and receiving HTTP responses.
+        Check the return code, and the data will be checked by the caller.
 
         Parameters
         ----------
         api : tuple
-            使用するHTTPリクエストとリクエスト先URLのタプル
+            Tuple of HTTP requests and destination URLs to use
 
         header : dict, default None
-            リクエストヘッダー
+            Request header
 
         payload : dict, default None
-            リクエストに添付するクエリデータ
-            GETならURLに接続し、POSTならBodyに組み込む
+            Query data to be attached to the request
+            Connect to the URL for GET, or embed it in the Body for POST
 
         return_all : bool, default False
-            レスポンスデータ全体を返却する場合に True を設定
-            デフォルトではディクショナリ形式に変換して返却する
+            Set to True if the entire response data is to be returned.
+            By default, it is converted to dictionary format and returned.
 
         Returns
         -------
         ret : dict or Response or None
-            レスポンスデータを全体または変換後の形式で返却
-            リクエストに失敗した場合はNone
+            Return response data as a whole or in a converted format
+            None if the request fails.
 
         Raises
         ------
         """
         self.logger.debug("{} START".format(sys._getframe().f_code.co_name))
         ret = None
-        try_limit = 3  # とりあえず3回試行できるようにしておく
+        try_limit = 3  # three attempts for now.
         retry_interval = 5
         for _ in range(1, try_limit, 1):
             try:
                 self.logger.debug("Request URL: [{}] {}".format(api[0], api[1]))
 
-                # リクエスト送信
+                # Send request
                 if api[0] == "GET":
                     res = requests.get(api[1], headers=header, params=payload, verify=self.verify)
                 elif api[0] == "POST":
                     res = requests.post(api[1], headers=header, data=json.dumps(payload), verify=self.verify)
 
-                # リターンコードが 200 台でない場合に例外を送出
+                # Send exception when return code is not 200 units.
                 res.raise_for_status()
 
                 status_code = res.status_code
@@ -148,12 +147,12 @@ class CiscoAPIDriver:
                 ret = res if return_all else res.json()
                 break
 
-            # 接続エラー系は再実行
+            # Re-run for connection error
             except (requests.exceptions.ProxyError, requests.exceptions.ConnectionError) as e:
                 self.logger.exception(f"HTTP connection error: {e}")
                 sleep(retry_interval)
 
-            # 上記以外の例外は異常終了
+            # Exceptions other than the above are abnormal termination.
             except Exception as e:
                 self.logger.exception(f"Unexpected error: {e}")
                 if res is not None:
@@ -205,19 +204,19 @@ class DNACDriver(CiscoAPIDriver):
     #===========================================================================
     def __create_url(self, api_path):
         """
-        パスにプロトコルとFQDNを接続し、HTTPリクエスト用URLを生成する。
+        Connect the protocol and FQDN to the path, and generate a URL for HTTP request.
 
         Parameters
         ----------
         api_path : str
-            APIパス
-            先頭はスラッシュ "/" であること
+            API path
+            Must be preceded by a slash "/".
 
         Returns
         -------
         _ : str
-            HTTPリクエストURL
-            パスがNone（設定が無い）の場合はNoneを返却する
+            HTTP request URL
+            If the path is None (no setting), return None.
 
         Raises
         ------
@@ -230,8 +229,8 @@ class DNACDriver(CiscoAPIDriver):
     #===========================================================================
     def __create_header(self, append=None, token=None):
         """
-        HTTPリクエストヘッダを生成する。
-        共通で以下のヘッダ情報を設定する。
+        Generate HTTP request headers.
+        Set the following header information in common.
             - Content-Type
             - Accept
             - x-auth-token
@@ -239,16 +238,16 @@ class DNACDriver(CiscoAPIDriver):
         Parameters
         ----------
         append : dict, default None
-            追加で設定するヘッダ情報のマップ
+            Map of header information to be set additionally
 
         token : str, default None
-            リクエストに必要なトークンを外部から指定する場合に設定
-            設定しない場合、インスタンス内に保持しているトークンを使用する
+            Set to specify the token required for the request from outside.
+            If not set, use the token held in the instance
 
         Returns
         -------
         ret : dict
-            HTTPリクエストヘッダ
+            HTTP request header
 
         Raises
         ------
@@ -264,9 +263,9 @@ class DNACDriver(CiscoAPIDriver):
     #===========================================================================
     def get_token(self):
         """
-        APIへのリクエスト時に必要なトークンを取得する。
-        最初にこのメソッドを実行しないと、以降のリクエストに必要なトークンが得られない。
-        トークンはインスタンス内部にも記録するため、インスタンスを保持する場合はトークンを指定する必要は無い。
+        Obtain the token required when making a request to the API.
+        If you do not run this method first, you will not get the tokens needed for subsequent requests.
+        Since the token is also recorded inside the instance, it is not necessary to specify the token if the instance is to be retained.
 
         Parameters
         ----------
@@ -274,8 +273,8 @@ class DNACDriver(CiscoAPIDriver):
         Returns
         -------
         _ : str or None
-            トークンを返却
-            リクエストに失敗した場合はNone
+            Return the token
+            None if the request fails.
 
         Raises
         ------
@@ -292,24 +291,24 @@ class DNACDriver(CiscoAPIDriver):
     #===========================================================================
     def get_devices(self, hostname=None, token=None):
         """
-        指定したデバイスのリストを取得する。
-        条件を指定しない場合、DNACに登録されている全てのデバイスを取得する。
+        Get a list of the specified devices.
+        If no condition is specified, all devices registered in DNAC are acquired.
 
         Parameters
         ----------
         hostname : str, default None
-            デバイスのホスト名を指定する場合に設定
-            ワイルドカード使用可
+            Set to specify the host name of the device.
+            Wildcards can be used.
 
         token : str, default None
-            リクエストに必要なトークンを外部から指定する場合に設定
-            設定しない場合、インスタンス内に保持しているトークンを使用する
+            Set to specify the token required for the request from outside.
+            If not set, use the token held in the instance
 
         Returns
         -------
         _ : list or None
-            デバイスのリストを返却
-            リクエストに失敗した場合はNone
+            Return the list of devices
+            None if the request fails.
 
         Raises
         ------
@@ -330,25 +329,25 @@ class DNACDriver(CiscoAPIDriver):
     #===========================================================================
     def kick_export_configs(self, ids, token=None):
         """
-        指定したデバイスのConfigを暗号化Zip形式でエクスポートする。
-        Configはクリアテキスト形式で出力され、パスワード等の文字列はマスクされない。
-        暗号化Zipのパスワードは「[ユーザ名]：[パスワード]」となる。
-        ※ここではエクスポート処理をキックするだけで、ダウンロードはできない。
+        Exports the Config of the specified device in encrypted Zip format.
+        Config is output in clear text format, and passwords and other character strings are not masked.
+        The password for the encrypted Zip is "[username]:[password]".
+        This only kicks off the export process, not the download.
 
         Parameters
         ----------
         ids : list
-            Config出力対象となるデバイスのIDリスト
+            ID list of devices to be Config output
 
         token : str, default None
-            リクエストに必要なトークンを外部から指定する場合に設定
-            設定しない場合、インスタンス内に保持しているトークンを使用する
+            Set to specify the token required for the request from outside.
+            If not set, use the token held in the instance.
 
         Returns
         -------
         _ : list or None
-            エクスポートプロセスのタスクIDを返却
-            リクエストに失敗した場合はNone
+            Return the task ID of the export process.
+            None if the request fails.
 
         Raises
         ------
@@ -366,22 +365,22 @@ class DNACDriver(CiscoAPIDriver):
     #===========================================================================
     def get_task_status(self, task_id, token=None):
         """
-        指定したタスクの状態を取得する。
+        Get the status of the specified task.
 
         Parameters
         ----------
         task_id : str
-            対象タスクのID
+            ID of the target task
 
         token : str, default None
-            リクエストに必要なトークンを外部から指定する場合に設定
-            設定しない場合、インスタンス内に保持しているトークンを使用する
+            Set to specify the token required for the request from outside.
+            If not set, use the token held in the instance.
 
         Returns
         -------
         _ : list or None
-            レスポンスデータ
-            リクエストに失敗した場合はNone
+            Response data
+            None if the request fails.
 
         Raises
         ------
@@ -399,28 +398,28 @@ class DNACDriver(CiscoAPIDriver):
     #===========================================================================
     def download_file(self, file_id=None, additional_status_url=None, token=None):
         """
-        指定したファイルをダウンロードする。
-        ファイルIDまたは追加URLのいずれかを指定すること。
-        両方を指定した場合はファイルIDを優先する。
-        両方を指定しない場合はFalseを返却する。
+        Download the specified file.
+        Either a file ID or an additional URL should be specified.
+        If both are specified, the file ID has priority.
+        If both are not specified, false is returned.
 
         Parameters
         ----------
         file_id : str, default None
-            対象ファイルのID
+            ID of the target file
 
         additional_status_url : str, default None
-            ファイル生成タスクから入手したダウンロードURL
+            Download URL obtained from the file generation task
 
         token : str, default None
-            リクエストに必要なトークンを外部から指定する場合に設定
-            設定しない場合、インスタンス内に保持しているトークンを使用する
+            Set to specify the token required for the request from outside.
+            If not set, use the token held in the instance.
 
         Returns
         -------
         _ : bool
-            ダウンロードに成功した場合はTrue
-            それ以外の場合はFalse
+            True if the download was successful.
+            Otherwise, False.
 
         Raises
         ------
@@ -439,13 +438,13 @@ class DNACDriver(CiscoAPIDriver):
         res = self._send_http_request(api, header=header, return_all=True)
         if res is None: return False
 
-        # レスポンスヘッダからファイル名を取得
+        # Get the file name from the response header
         content_disposition = res.headers["Content-Disposition"]
         filename_attribute = "filename="
         filename = content_disposition[content_disposition.find(filename_attribute) + len(filename_attribute):]
         filename = filename.replace("\"", "")
 
-        # バイナリデータとしてファイル出力
+        # File output as binary data
         with open(filename, "wb") as f:
             f.write(res.content)
 
@@ -456,27 +455,27 @@ class DNACDriver(CiscoAPIDriver):
     #===========================================================================
     def get_client(self, mac, timestamp=None, token=None):
         """
-        指定したクライアントの詳細情報を取得する。
+        Get detailed information about the specified client.
 
         Parameters
         ----------
         mac : str
-            対象クライアントのMACアドレス
+            MAC address of the target client
 
         timestamp : int or None, default blank
-            特定の時間の情報を取得したい場合に設定
-            設定値はエポック時間（ミリ秒単位）
-            設定しない場合は最新の情報を取得
+            Set when you want to get information for a specific time.
+            The set value is the epoch time (in milliseconds).
+            If not set, get the latest information
 
         token : str, default None
-            リクエストに必要なトークンを外部から指定する場合に設定
-            設定しない場合、インスタンス内に保持しているトークンを使用する
+            Set to specify the token required for the request from outside.
+            If not set, use the token held in the instance.
 
         Returns
         -------
         _ : dict or None
-            レスポンスデータ
-            リクエストに失敗した場合はNone
+            Response data
+            None if the request fails.
 
         Raises
         ------
@@ -494,30 +493,30 @@ class DNACDriver(CiscoAPIDriver):
     #===========================================================================
     def get_client_enrichment(self, entity_type, entity_value, issue_category=None, token=None):
         """
-        指定したクライアントに発生している異常および改善策を取得する。
+        Get the anomalies and remedies occurring in the specified client.
 
         Parameters
         ----------
         entity_type : str
-            対象クライアントを特定するためのキー
-            "network_user_id" または "mac_address"
+            Key to identify the target client.
+            "network_user_id" or "mac_address"
 
         entity_value : str
-            キーに対するパラメータ
-            ユーザIDまたはMACアドレス
+            Parameters for the key
+            User ID or MAC address
 
         issue_category : str, default None
-            イベントのカテゴリを絞り込む場合に設定
+            Set to refine the category of the event.
 
         token : str, default None
-            リクエストに必要なトークンを外部から指定する場合に設定
-            設定しない場合、インスタンス内に保持しているトークンを使用する
+            Set to specify the token required for the request from outside.
+            If not set, use the token held in the instance.
 
         Returns
         -------
         _ : dict or None
-            レスポンスデータ
-            リクエストに失敗した場合はNone
+            Response data
+            None if the request fails.
 
         Raises
         ------
@@ -529,7 +528,7 @@ class DNACDriver(CiscoAPIDriver):
         data = self._send_http_request(self.get_client_enrichment_details_api, header=header)
         if data is None: return None
 
-        # HTTPレスポンスは 200 でデータにエラーが入ってるパターンがある
+        # HTTP response is 200, but there is a pattern of errors in the data.
         if "errorCode" in data:
             self.logger.error("Return error : [{}] {}".format(data["errorCode"], data["errorDescription"]))
             return None
@@ -541,7 +540,7 @@ class DNACDriver(CiscoAPIDriver):
     #===========================================================================
     def get_client_enrichment_by_mac(self, mac, issue_category=None, token=None):
         """
-        get_client_enrichment() のラッパー関数。
+        get_client_enrichment() wrapper function.
         """
         return self.get_client_enrichment("mac_address", mac, issue_category, token)
 
@@ -550,7 +549,7 @@ class DNACDriver(CiscoAPIDriver):
     #===========================================================================
     def get_client_enrichment_by_uid(self, uid, issue_category=None, token=None):
         """
-        get_client_enrichment() のラッパー関数。
+        get_client_enrichment() wrapper function.
         """
         return self.get_client_enrichment("network_user_id", uid, issue_category, token)
 
@@ -580,24 +579,24 @@ class UmbrellaDriver(CiscoAPIDriver):
     #===========================================================================
     def __create_header(self, append=None, token=None):
         """
-        HTTPリクエストヘッダを生成する。
-        共通で以下のヘッダ情報を設定する。
+        Generate HTTP request headers.
+        Set the following header information in common.
             - Content-Type
             - Authorization
 
         Parameters
         ----------
         append : dict, default None
-            追加で設定するヘッダ情報のマップ
+            Map of header information to be set additionally
 
         token : str, default None
-            リクエストに必要なトークンを外部から指定する場合に設定
-            設定しない場合、インスタンス内に保持しているトークンを使用する
+            Set to specify the token required for the request from outside.
+            If not set, use the token held in the instance.
 
         Returns
         -------
         ret : dict
-            HTTPリクエストヘッダ
+            HTTP request header
 
         Raises
         ------
@@ -612,9 +611,9 @@ class UmbrellaDriver(CiscoAPIDriver):
     #===========================================================================
     def get_token(self):
         """
-        APIへのリクエスト時に必要なトークンを取得する。
-        最初にこのメソッドを実行しないと、以降のリクエストに必要なトークンが得られない。
-        トークンはインスタンス内部にも記録するため、インスタンスを保持する場合はトークンを指定する必要は無い。
+        Obtain the token required when making a request to the API.
+        If you do not run this method first, you will not get the tokens needed for subsequent requests.
+        Since the token is also recorded inside the instance, it is not necessary to specify the token if the instance is to be retained.
 
         Parameters
         ----------
@@ -622,8 +621,8 @@ class UmbrellaDriver(CiscoAPIDriver):
         Returns
         -------
         _ : dict or None
-            レスポンスデータ
-            リクエストに失敗した場合はNone
+            Response data
+            None if the request fails.
 
         Raises
         ------
@@ -640,45 +639,45 @@ class UmbrellaDriver(CiscoAPIDriver):
     #===========================================================================
     def get_activity(self, org_id, term_from, term_to, list_limit, act_type="all", act_category=None, ip=None, token=None):
         """
-        指定した期間内のUmbrellaのアクティビティのリストを取得する。
+        Get a list of Umbrella's activities within the specified period.
 
         Parameters
         ----------
         org_id : str
-            対象組織のID
+            ID of the target organization
 
         term_from : str or int
-            期間の開始時間
-            タイムスタンプのシリアル値（e.g. 14205322422）または相対時間の文字列（e.g. -1days）を指定
+            Start time of the period
+            Serial value of timestamp (e.g. 14205322422) or string of relative time (e.g. -1days)
 
         term_to : str or int
-            期間の開始時間
-            タイムスタンプのシリアル値（e.g. 14205322422）または相対時間の文字列（e.g. -1days）を指定
+            End time of the period
+            Serial value of timestamp (e.g. 14205322422) or string of relative time (e.g. -1days)
 
         list_limit : int
-            取得するアクティビティの最大件数
+            Maximum number of activities to retrieve
 
         act_type : str, default "all"
-            アクティビティの種類でフィルターしたい場合に設定
-            有効な値は dns/proxy/firewall/ip
-            省略、または無効な値が指定された場合、フィルターしない
+            Set if you want to filter by activity type.
+            Valid values are dns/proxy/firewall/ip
+            If omitted or an invalid value is specified, do not filter.
 
         act_category : str, default None
-            アクティビティのカテゴリでフィルターしたい場合に設定
-            カテゴリIDをカンマ区切りで指定する
+            Set if you want to filter by activity category.
+            Specify the category ID as a comma-separated list
 
         ip : str, default None
-            クライアントのIPアドレスでフィルターしたい場合に設定
+            Set if you want to filter by client IP address.
 
         token : str, default None
-            リクエストに必要なトークンを外部から指定する場合に設定
-            設定しない場合、インスタンス内に保持しているトークンを使用する
+            Set to specify the token required for the request from outside.
+            If not set, use the token held in the instance.
 
         Returns
         -------
         _ : list or None
-            レスポンスデータ
-            リクエストに失敗した場合はNone
+            Response data
+            None if the request fails.
 
         Raises
         ------
@@ -694,7 +693,7 @@ class UmbrellaDriver(CiscoAPIDriver):
                    "categories": "" if act_category is None else act_category,
                    "ip": "" if ip is None else ip}
 
-        # requests.get() ではクエリ文字列の生成時にカンマを「%2C」に変換するので、クエリ付きURLを生成して渡す必要あり
+        # In requests.get(), comma is converted to "%2C" when generating query string, so URL with query must be generated and passed.
         # https://stackoverflow.com/questions/56734910/python-converting-in-requests-get-parameters-to-2c-and-to-7c
         url += "?" + "&".join([f"{k}={v}" for k, v in payload.items()])
 
@@ -732,8 +731,8 @@ class AMP4EDriver(CiscoAPIDriver):
     #===========================================================================
     def __create_header(self, append=None):
         """
-        HTTPリクエストヘッダを生成する。
-        共通で以下のヘッダ情報を設定する。
+        Generate HTTP request headers.
+        Set the following header information in common.
             - Accept
             - Content-Type
             - Accept-Encoding
@@ -742,12 +741,12 @@ class AMP4EDriver(CiscoAPIDriver):
         Parameters
         ----------
         append : dict, default None
-            追加で設定するヘッダ情報のマップ
+            Map of header information to be set additionally
 
         Returns
         -------
         ret : dict
-            HTTPリクエストヘッダ
+            HTTP request header
 
         Raises
         ------
@@ -764,25 +763,25 @@ class AMP4EDriver(CiscoAPIDriver):
     #===========================================================================
     def get_computers(self, list_limit, list_offset=0, ip=None):
         """
-        指定したホストコンピュータのリストを取得する。
+        Get the list of specified host computers.
 
         Parameters
         ----------
         list_limit : int
-            リストの最大件数
+            Maximum number of lists
 
         list_offset : int, default 0
-            リストの取得開始位置
+            Start position for getting the list
 
         ip : str, default None
-            ホストコンピュータのIPアドレスでフィルターする場合に設定
-            末尾を省略することでアドレス帯を指定できる（ワイルドカードは不要）
+            Set to filter by IP address of the host computer.
+            The address band can be specified by omitting the end (wildcards are not required)
 
         Returns
         -------
         _ : list or None
-            レスポンスデータ
-            リクエストに失敗した場合はNone
+            Response data
+            None if the request fails.
 
         Raises
         ------
@@ -802,24 +801,24 @@ class AMP4EDriver(CiscoAPIDriver):
     #===========================================================================
     def get_events(self, list_limit, list_offset=0, connector_guid=None):
         """
-        指定したイベントのリストを取得する。
+        Get a list of the specified events.
 
         Parameters
         ----------
         list_limit : int
-            リストの最大件数
+            Maximum number of lists
 
         list_offset : int, default 0
-            リストの取得開始位置
+            Start position for getting the list
 
         connector_guid : str, default None
-            Connector GUIDでフィルターする場合に設定
+            Set to filter by Connector GUID
 
         Returns
         -------
         _ : list or None
-            レスポンスデータ
-            リクエストに失敗した場合はNone
+            Response data
+            None if the request fails.
 
         Raises
         ------
@@ -854,7 +853,7 @@ def get_request():
         resp2 = amp4e_event(value)
         resp.extend(resp2)
     else:
-        # 想定外のリクエストが流れてきたらデフォルトのメッセージを表示する
+        # Display a default message when an unexpected request comes in.
         if value not in json_dict: value = "bad condition"
         resp = [{"type": "text",
                  "value": json_dict[value]}]
@@ -880,7 +879,7 @@ def dnac_client_enrich(mac=None, uid=None):
                 return [{"type": "text",
                          "value": "<br>".join([f"can not find client having MAC '{mac}'.",
                                                "please confirm and input MAC (format: 'XX:XX:XX:XX:XX:XX') again."])}]
-            # 先頭の1台分だけ取得
+            # Get only the first one.
             enrich = enrichs[0]
             if not (len(enrich["userDetails"]) and len(enrich["connectedDevice"])):
                 return [{"type": "text",
@@ -895,7 +894,7 @@ def dnac_client_enrich(mac=None, uid=None):
                 return [{"type": "text",
                          "value": "<br>".join([f"can not find client logging in user '{uid}'.",
                                                "please confirm and input UserID (format: uid-&lt;userid&gt; / e.g. uid-taro) again."])}]
-            # 先頭の1台分だけ取得
+            # Get only the first one.
             enrich = enrichs[0]
             if not (len(enrich["userDetails"]) and len(enrich["connectedDevice"])):
                 return [{"type": "text",
@@ -922,7 +921,7 @@ def dnac_client_enrich(mac=None, uid=None):
         port = client["detail"]["port"]
         link_speed = client["detail"]["linkSpeed"]
         host_score = client["detail"]["healthScore"][0]["score"]
-        # 接続が切れていてクライアントデータだけが残っている場合、connectionInfo にはエラー情報が入ってる
+        # If the connection is broken and only the client data is left, the connectionInfo will contain error information.
         band = client["connectionInfo"].get("band", "----")
         channel_width = client["connectionInfo"].get("channelWidth", "----")
         device_name = client["connectionInfo"].get("nwDeviceName", "----")
@@ -981,7 +980,7 @@ def dnac_client_enrich(mac=None, uid=None):
                                                "if issues are not resolved, please contact IT department."]),
                          "delayMs": 2000})
 
-        # ついでに、UmbrellaとAMP4Eの情報も取得する
+        # We'll also get information about Umbrella and AMP4E.
         resp.append({"type": "text",
                      "value": "moving on to the security check...",
                      "delayMs": 2000})
@@ -1008,12 +1007,12 @@ def umbrella_report(ip):
 
     umbrella_driver.get_token()
 
-    # TODO: デモ用として、一部のフィルタリング条件は固定する
+    # TODO: For demonstration purposes, some filtering conditions are fixed.
     org_id = "2067079"
     term_from = "-1days"
     term_to = "now"
     list_limit = 5
-    act_category = "68,66,64"  # Malware, Phishing, C&Cのカテゴリでフィルタリング
+    act_category = "68,66,64"  # Filtering by Malware, Phishing, and C&C categories
     response_report = umbrella_driver.get_activity(org_id,
                                                    term_from,
                                                    term_to,
@@ -1052,7 +1051,7 @@ def umbrella_report(ip):
 def amp4e_event(ip):
     resp = []
 
-    # TODO: デモ用として、一部のフィルタリング条件は固定する
+    # TODO: For demonstration purposes, some filtering conditions are fixed.
     list_limit = 5
     data = amp4e_driver.get_computers(list_limit, ip=ip)
     computers = data["data"]
@@ -1060,7 +1059,7 @@ def amp4e_event(ip):
         return [{"type": "text",
                  "value": "you do not have the AMP4E agent installed on your device. please contact IT department to install the agent."}]
 
-    # デバイスにAMP4Eがインストール済みであれば、イベント情報を取得
+    # If AMP4E is already installed on the device, get event information
     data = amp4e_driver.get_events(list_limit, connector_guid=computers[0]["connector_guid"])
 
     resp.append({"type": "text",
@@ -1093,8 +1092,8 @@ def amp4e_event(ip):
 
 
 if __name__ == "__main__":
-    # DNACが自己証明書を使ってるとSSL証明書の検証でエラーが発生するので検証をOFFする
-    # 検証をOFFすると InsecureRequestWarning が出るので、それも無視する
+    # If DNAC uses a self-certificate, an error will occur when verifying the SSL certificate, so turn off verification.
+    # If you turn off verification, you will get an InsecureRequestWarning, ignore that too.
     urllib3.disable_warnings(InsecureRequestWarning)
     driver = DNACDriver(verify=False)
     umbrella_driver = UmbrellaDriver()
