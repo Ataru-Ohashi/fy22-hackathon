@@ -1,7 +1,7 @@
 {
-    "hostname": "",
-    "username": "",
-    "password": "",
+    "hostname": "<hostname>",
+    "username": "<username>",
+    "password": "<username>",
     "zip_pass": "admin:Cisco123!",
     "api": {
         "authenticationAPI": ["POST", "/dna/system/api/v1/auth/token"],
@@ -15,7 +15,7 @@
     "umbrella_api_key": "",
     "umbrella_api": {
         "authentication": ["GET", "https://management.api.umbrella.com/auth/v2/oauth2/token"],
-        "reportingActivity": ["GET", "https://reports.api.umbrella.com/v2/organizations/{organizationid}/activity"]
+        "reportingActivity": ["GET", "https://reports.api.umbrella.com/v2/organizations/<organizationId>/activity"]
     },
     "amp4e_hostname": "",
     "amp4e_id": "",

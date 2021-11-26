@@ -637,15 +637,12 @@ class UmbrellaDriver(CiscoAPIDriver):
     #===========================================================================
     # get_activity
     #===========================================================================
-    def get_activity(self, org_id, term_from, term_to, list_limit, act_type="all", act_category=None, ip=None, token=None):
+    def get_activity(self, term_from, term_to, list_limit, act_type="all", act_category=None, ip=None, token=None):
         """
         Get a list of Umbrella's activities within the specified period.
 
         Parameters
         ----------
-        org_id : str
-            ID of the target organization
-
         term_from : str or int
             Start time of the period
             Serial value of timestamp (e.g. 14205322422) or string of relative time (e.g. -1days)
@@ -684,7 +681,7 @@ class UmbrellaDriver(CiscoAPIDriver):
         """
         header = self.__create_header(token=token)
         protocol = self.reporting_activity_api[0]
-        url = self.reporting_activity_api[1].format(organizationid=org_id)
+        url = self.reporting_activity_api[1]
         if act_type in ["dns", "proxy", "firewall", "ip"]:
             url += "/" + act_type
         payload = {"from": term_from,
@@ -848,6 +845,7 @@ def get_request():
         resp = dnac_client_enrich(mac=value)
     elif re.compile(r"uid-").search(value):
         resp = dnac_client_enrich(uid=value[4:])
+    # If don't want to integrate with Umbrella or AMP4E, please comment out below 4 lines
     elif re.compile(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$").search(value):
         resp = umbrella_report(value)
         resp2 = amp4e_event(value)
@@ -981,6 +979,7 @@ def dnac_client_enrich(mac=None, uid=None):
                          "delayMs": 2000})
 
         # We'll also get information about Umbrella and AMP4E.
+        # If don't want to integrate with Umbrella or AMP4E, please comment out below 9 lines
         resp.append({"type": "text",
                      "value": "moving on to the security check...",
                      "delayMs": 2000})
@@ -1008,13 +1007,11 @@ def umbrella_report(ip):
     umbrella_driver.get_token()
 
     # TODO: For demonstration purposes, some filtering conditions are fixed.
-    org_id = "2067079"
     term_from = "-1days"
     term_to = "now"
     list_limit = 5
     act_category = "68,66,64"  # Filtering by Malware, Phishing, and C&C categories
-    response_report = umbrella_driver.get_activity(org_id,
-                                                   term_from,
+    response_report = umbrella_driver.get_activity(term_from,
                                                    term_to,
                                                    list_limit,
                                                    act_category=act_category,
@@ -1096,6 +1093,7 @@ if __name__ == "__main__":
     # If you turn off verification, you will get an InsecureRequestWarning, ignore that too.
     urllib3.disable_warnings(InsecureRequestWarning)
     driver = DNACDriver(verify=False)
+    # If don't want to integrate with Umbrella or AMP4E, please comment out below 2 lines
     umbrella_driver = UmbrellaDriver()
     amp4e_driver = AMP4EDriver()
 
