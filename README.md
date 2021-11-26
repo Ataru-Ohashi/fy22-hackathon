@@ -50,13 +50,14 @@ code
 
 Update the following values in config.json to suit your environment:
 ```
-"hostname": "[DNA server hostname]"
-"username": "[DNA server access user]"
-"password": "[DNA server access password]"
-"umbrella_api_key": "[Umbrella api-key]"
-"amp4e_hostname": "[AMP4E hostname]"
-"amp4e_id": "[AMP4E access id]"
-"amp4e_key": "[AMP4E access key]"
+"hostname": "<hostname>" ... replace <hostname> to DNA server hostname
+"username": "<username>" ... replace <username> to DNA server access user
+"password": "<username>" ... replace <username> to DNA server access password
+"umbrella_api_key": "" ... input Umbrella api-key
+"amp4e_hostname": "" ... input AMP4E hostname
+"amp4e_id": "" ... input AMP4E access id
+"amp4e_key": "" ... input AMP4E access key
+"reportingActivity": ["GET", "https://reports.api.umbrella.com/v2/organizations/<organizationId>/activity"] ... replace <organizationId> to AMP4E organization id
 ```
 
 
