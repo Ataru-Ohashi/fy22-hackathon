@@ -1,0 +1,511 @@
+@charset "utf-8";
+
+
+/* =Reset default browser CSS.
+Based on work by Eric Meyer: http://meyerweb.com/eric/tools/css/reset/index.html
+-------------------------------------------------------------- */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {border: 0;font-family: inherit;font-size: 100%;font-style: inherit;font-weight: inherit;margin: 0;outline: 0;padding: 0;vertical-align: baseline;}
+:focus {outline: 0;}
+
+ol, ul {list-style: none;}
+table {border-collapse: separate;border-spacing: 0;}
+caption, th, td {font-weight: normal;text-align: left;}
+blockquote:before, blockquote:after,q:before, q:after {content: "";}
+blockquote, q {quotes: "" "";}
+a img{border: 0;}
+figure{margin:0}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display: block;}
+/* -------------------------------------------------------------- */
+
+body{
+color:#333;
+/* font:12px verdana,"ヒラギノ丸ゴ ProN W4","Hiragino Maru Gothic ProN","メイリオ","Meiryo","ＭＳ Ｐゴシック","MS PGothic",Sans-Serif;
+*/
+font:16px verdana,"CiscoSans";
+line-height:1.5;
+-webkit-text-size-adjust: none;
+background:#fff;
+border-top:5px solid #358cac;
+border-bottom:5px solid #358cac;
+z-index:50;
+}
+
+
+/* チャットボット
+------------------------------------------------------------*/
+#chatbot{
+z-index:500;
+}
+
+
+/* リンク設定
+------------------------------------------------------------*/
+a{color:#358cac;text-decoration:none;}
+a:hover{color:#73c4e6;}
+a:active, a:focus{outline:0;}
+
+
+/* 全体
+------------------------------------------------------------*/
+#wrapper{
+margin:20px auto;
+padding:0 1%;
+width:98%;
+/* position:relative; */
+}
+
+.inner{
+margin:0 auto;
+width:100%;
+}
+
+
+/*************
+/* ヘッダー
+*************/
+h1{
+font-size:12px;
+line-height:1.6;
+font-weight:normal;
+}
+
+#header{
+overflow:hidden;
+padding:5px 0 0;
+}
+
+* html #header{height:1%;}
+
+
+/*************
+/* ロゴ
+*************/
+#header .logo{
+float:left;
+padding:20px 0;
+}
+
+.logo a{
+font-size:30px;
+font-weight:bold;
+line-height:1;
+/* font-family:"Palatino Linotype", "Book Antiqua", Palatino,"ヒラギノ明朝 Pro W3","Hiragino Mincho Pro","ＭＳ Ｐ明朝","MS PMincho",serif;
+*/
+font-family:"CiscoSansTT Thin";
+}
+
+.logo span{
+font-size:20px;
+font-weight:normal;
+}
+
+.info{
+float:right;
+padding:20px 0;
+}
+
+.tel strong{
+font-size:20px;
+font-weight:bold;
+}
+
+/**************************
+/* トップナビゲーション
+**************************/
+ul#topnav{
+clear:both;
+overflow:hidden;
+margin:0 auto 30px;
+/* background:#358cac; */
+background: #00bceb;
+}
+
+* html ul#topnav{height:1%;}
+
+ul#topnav li{
+float:left;
+}
+
+ul#topnav a{
+width:146px;
+font-size:16px;
+font-family:"CiscoSansTT";
+display:block;
+padding:5px 0 20px 10px;
+color:#fff;
+border-left:1px solid #fff;
+}
+
+ul#topnav li:first-child a{border:0;}
+
+ul#topnav li:last-child a{width:145px;}
+
+/* ul#topnav li.active a,ul#topnav a:hover{background:#73c4e6;} */
+
+ul#topnav li.active a,ul#topnav a:hover{background:#1e4471;}
+
+
+/**************************
+/* メイン画像（トップページ+サブページ）
+**************************/
+#mainBanner{
+clear:both;
+line-height:0;
+z-index: 1;
+}
+
+#mainBanner .inner{
+/* position:relative; */
+}
+
+#mainBanner img{
+max-width:100%;
+height:auto;
+
+}
+
+.slogan{
+/* position:absolute; */
+max-width:100%;
+height:auto;
+bottom:10px;
+left:10px;
+padding:5px 10px;
+line-height:1.4;
+z-index:100;
+color:#225b70;
+background:url(images/tp.png);
+}
+
+.subImg .slogan{
+left:auto;
+right:10px;
+}
+
+.slogan h2{
+padding-bottom:5px;
+font-size:18px;
+}
+
+.slogan h3{
+font-size:12px;
+}
+
+
+/**************************
+/* グリッド
+**************************/
+.gridWrapper{
+clear:both;
+padding:20px 0;
+overflow:hidden;
+z-index: 10;
+}
+
+* html .gridWrapper{height:1%;}
+	
+.grid{
+float:left;
+background:#f4f4f4;
+border-right:1px solid #fff;
+}
+
+.colDark,.colLight{
+padding-bottom:10px;
+}
+
+.colDark h3,.colLight h3{
+text-align:center;
+padding:5px 10px;
+font-size:16px;
+font-family:"CiscoSansTT";
+color:#fff;
+background:#73c4e6;
+}
+
+.colDark h3{
+background:#358cac;
+}
+
+.grid p{
+padding:5px 10px;
+font-size:13px;
+}
+
+.grid ul{margin:5px 10px;}
+
+.grid li{
+padding:5px 0;
+list-style:inside;
+font-size:13px;
+font-family:"CiscoSansTT";
+border-top:1px solid #fff;
+border-bottom:1px solid #dbdbdb;
+}
+
+.grid li:first-child{border-top:0;}
+.grid li:last-child{border-bottom:0;}
+
+.gridWrapper img{
+max-width:100%;
+height:auto;
+}
+
+/* フッター内のグリッド(3カラム) */
+#footer .grid{
+background:transparent;
+}
+
+#footer .col3 ul{margin:0 0 10px 5px;}
+
+#footer .col3 li{
+padding:0 7px 0 5px;
+margin-bottom:3px;
+list-style:none;
+border-bottom:0;
+display:inline-block;
+border:0;
+}
+
+
+/*************
+メイン コンテンツ
+*************/
+section.content{
+margin-bottom:20px;
+font-size:14px;
+overflow:hidden;
+}
+
+* html section.content{height:1%;}
+
+section.content article{
+padding:10px;
+overflow:hidden;
+background:#f4f4f4;
+}
+
+* html section.content article{height:1%;}
+
+section.content p{margin-bottom:5px;}
+
+h3.heading,#sub .grid h3{
+padding:5px 10px;
+font-size:16px;
+font-family:"CiscoSansTT";
+color:#fff;
+background:#73c4e6;
+}
+
+#main h3.heading,#sub .col2 h3{background:#358cac;}
+
+.alignleft{
+float:left;
+clear:left;
+margin:3px 10px 10px 1px;
+}
+
+.alignright{
+float:right;
+clear:right;
+margin:3px 1px 10px 10px;
+}
+
+img.frame,#gallery img{
+border:3px solid #358cac;
+}
+
+#gallery .gridWrapper{padding:0;}
+#gallery .grid{border:0;background:none;}
+
+#gallery img{
+margin:5px;
+}
+
+section#gallery{overflow:visible;}
+
+
+/*************
+テーブル
+*************/
+table.table{
+border-collapse:collapse;
+width:100%;
+margin:10px auto;
+}
+
+table.table th,table.table td{
+padding:5px;
+border:1px solid #73c4e6;
+}
+
+table.table tr:first-child th,table.table tr:first-child td{
+border-top:#73c4e6 4px solid
+}
+
+table.table th{
+font-weight:bold;
+letter-spacing:1px;
+white-space:nowrap;
+color:#fff;
+background:#358cac;
+}
+
+
+/*************
+/* フッター
+*************/
+#footer .copyright{font-size:11px;}
+
+
+/* PC用 */
+@media only screen and (min-width:960px){
+	#wrapper,.inner,ul#topnav{
+	width:940px;
+	padding:0;
+	}
+	
+	#wrapper{padding-bottom:20px;}
+	
+	#main{
+	float:right;
+	width:690px;
+	}
+	
+	#subpage #sub{
+	float:left;
+	width:235px;
+	overflow:hidden;
+	}
+	
+	/* グリッド */
+	.grid{width:234px;}
+	.col2{width:469px;padding-bottom:12px;}
+	.col3{width:704px;}
+	#gallery .grid{width:230px;}
+	#subpage #sub .grid{
+	width:100%;
+	float:none;
+	padding-bottom:30px;
+	}
+	
+}
+
+
+/* モニター幅960px以下 */
+@media only screen and (max-width:960px){
+	#header h1,#header .logo{padding-left:10px;}
+	#header .info{padding-right:10px;}
+	
+	ul#topnav{
+	clear:both;
+	width:100%;
+	}
+
+	ul#topnav li{
+	width:33%;
+	border-right:1px solid #73c4e6;
+	border-bottom:1px solid #73c4e6;
+	box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+	}
+
+	ul#topnav li:nth-child(3n){border-right:0;width:34%;}
+
+	ul#topnav a{
+	width:100%;
+	border:0;
+  box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+	}
+	
+	#mainBanner{width:100%;}
+
+	.grid{
+	width:50%;
+	margin:2px 0;
+  box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+	}
+	
+	.col2{
+	float:none;
+	width:100%;
+	margin:0 0 20px;
+	}
+	
+	.grid img{
+	float:left;
+	margin-right:5px;
+	}
+	
+	#gallery .grid{
+	width:31%;
+	margin:0 1%;
+	padding:0;
+	}
+	
+	#gallery .grid img{
+	float:none;
+	}
+	
+	section.content{padding:0 10px;}
+	
+	section.content img{
+  max-width:90%;
+	height:auto;
+	}
+	
+	#sub .grid{padding-bottom:20px;}
+	
+	#footer{padding:0;}
+	
+	#footer .grid{
+	float:none;
+	width:100%;
+	margin-bottom:5px;
+	text-align:center;
+	}
+}
+
+
+/* スマートフォン 横(ランドスケープ) */
+@media only screen and (max-width:640px){
+	.grid{width:100%;}
+	
+	.grid img{
+	float:none;
+	margin:20px auto 10px;
+	}
+	
+	.grid p{text-align:left;}
+	
+	img.frame,#gallery img{border-width:2px;}
+
+  .alignleft,.alignright{
+	float:none;
+	display:block;
+	margin:0 auto 10px;
+	}
+	
+	#footer .grid p{text-align:center;}
+}
+
+
+/* スマートフォン 縦(ポートレート) */
+@media only screen and (max-width:480px){
+	#header .logo{padding-top:10px;}
+  .info{padding:10px 0;}
+	ul#topnav li{width:50%;}
+
+	ul#topnav li:nth-child(3n){
+	border-right:1px solid #73c4e6;
+	width:50%;
+	}	
+	ul#topnav li:nth-child(2n),ul#topnav li:nth-child(6n){border-right:0;}
+	
+	#mainBanner h2,#mainBanner h3{font-size:80%;}
+}

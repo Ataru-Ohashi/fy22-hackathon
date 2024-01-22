@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="description" content="Team scrum homepage">
+<meta name="keywords" content="">
+<title>Team scrum homepage</title>
+<link rel="stylesheet" href="style.css" type="text/css" media="screen">
+<!--[if lt IE 9]>
+<script src="js/html5.js"></script>
+<script src="js/css3-mediaqueries.js"></script>
+<![endif]-->
+</head>
+<body>
+<div id="chatbot">
+	<script src="https://riversun.github.io/chatux/chatux.min.js"></script>
+	<script>
+    const chatux = new ChatUx();
+    const initParam =
+        {
+            renderMode: 'auto',
+            api: {
+                endpoint: 'http://127.0.0.1:5000/',
+                method: 'GET',
+                dataType: 'jsonp'
+            },
+            bot: {
+                /* botPhoto: 'https://enjoynet.co.jp/icon/honwakaneesan_stickericon_02.jpg', */
+				botPhoto: 'chatbot1.png',
+                humanPhoto: null,
+                widget: {
+                    sendLabel: 'Send',
+                    placeHolder: 'What is your inquery?'
+                }
+            },
+            window: {
+                title: 'Contact us',
+                infoUrl: 'http://www.hogehoge.local'
+            }
+        };
+    chatux.init(initParam);
+    chatux.start(false);
+	</script>
+</div>
+
+<!-- ヘッダー -->
+<div id="header">
+	<div class="inner">
+  
+  	<h1>This is Team scrum homepage</h1>
+
+		<!-- ロゴ -->
+		<div class="logo">
+			<a href="index.html">Team scrum<br><span>No plan</span></a>
+		</div>
+		<!-- / ロゴ -->
+    
+    <!-- 電話番号+受付時間 -->
+		<div class="info">
+    	<p class="tel">Tel: <strong>012-3456-7890</strong></p>
+			<p>Business Hours: AM 10:00 - PM 5:00</p>
+    </div>
+		<!-- / 電話番号+受付時間 -->
+    
+
+
+  <!-- トップナビゲーション -->
+	<ul id="topnav">
+		<li class="active"><a href="index.html">Top page<br></a></li>
+		<li><a href="subpage.html">Greeting<br></a></li>
+		<li><a href="subpage.html">Service<br></a></li>
+		<li><a href="subpage.html">Approach<br></a></li>
+		<li><a href="subpage.html">Company<br></a></li>
+		<li><a href="subpage.html">Contact<br></a></li>
+	</ul>
+	<!-- トップナビゲーション -->
+  
+  </div>
+  
+</div>
+<!-- / ヘッダー -->
+
+<!-- メイン画像 -->
+<div id="mainBanner" class="test3">
+	<div class="inner">
+		<img src="images/test3.jpeg" width="940" height="300" alt="">
+    <div class="slogan">
+			<h2>Team scrum is alway no plan.</h2>
+			<h3>Maximum effect with minimum effort</h3>
+		</div>
+	</div>
+</div>
+<!-- / メイン画像 -->
+
+<div id="wrapper">
+
+	<!-- 4カラム -->
+  <section class="gridWrapper">
+		<article class="grid colDark">
+			<h3>DNA Center</h3>	
+			<p>About DNA Center </p>
+			<p class="readmore"><a href="subpage.html">&raquo; more</a></p>
+		</article>
+		<article class="grid colLight">
+			<h3>Umbrella</h3>
+			<p>About Umbrella</p>
+			<p class="readmore"><a href="subpage.html">&raquo; more</a></p>
+		</article>
+		<article class="grid colDark">
+      <h3>AMP4E</h3>
+			<p>About AMP4E</p>
+			<p class="readmore"><a href="subpage.html">&raquo; more</a></p>
+		</article>
+    <article class="grid colLight">
+			<h3>Others</h3>
+			<p>Editing....</p>
+			<p class="readmore"><a href="subpage.html">&raquo; more</a></p>
+		</article>
+	</section>
+	<!-- / 4カラム -->
+      
+	<!--
+	<section class="gridWrapper" id="sub">
+  	<article class="grid col2">
+    	<h3>Message 5</h3>	
+			<p>Test sample message is here 5</p>
+			<p class="readmore"><a href="subpage.html">&raquo; more</a></p>
+    </article>
+    
+    <article class="grid">
+			<h3>Message 6</h3>
+			<ul>
+				<li><a href="subpage.html">Test sample message is here 6</a></li>
+				<li><a href="subpage.html">Test sample message is here 7</a></li>
+			</ul>
+    </article>
+    
+    <article class="grid">
+			<h3>Message 7</h3>
+			<ul>
+				<li><a href="subpage.html">Test sample message is here 8</a></li>
+				<li><a href="subpage.html">Test sample message is here 9</a></li>
+			</ul>
+		</article> 
+    
+	</section>
+	-->
+
+</div>
+<!-- / WRAPPER -->
+
+<!-- フッター -->
+<div id="footer">
+	<div class="inner">
+    
+		<!-- 3カラム -->
+    <section class="gridWrapper">
+      
+			<article class="grid">
+      	<!-- ロゴ -->
+				<p class="logo"><a href="index.html">Team scrum<br /><span>No plan</span></a></p>
+				<!-- / ロゴ -->
+			</article>
+      
+      <article class="grid col3">
+      	<ul>
+					<li><a href="subpage.html">eco</a></li>
+					<li><a href="subpage.html">computer</a></li>
+					<li><a href="subpage.html">food service</a></li>
+					<li><a href="subpage.html">greeting</a></li>
+					<li><a href="subpage.html">service</a></li>
+					<li><a href="subpage.html">company</a></li>
+					<li><a href="subpage.html">contatc</a></li>
+					<li><a href="subpage.html">site map</a></li>
+				</ul>
+      	<p>Copyright(c) 2021 Team scrum. All Rights Reserved. </p>
+      </article>
+		
+    </section>
+		<!-- / 3カラム -->
+      
+	</div>
+</div>
+<!-- / フッター -->
+
+</body>
+</html>
